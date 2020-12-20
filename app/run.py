@@ -14,9 +14,11 @@ def index():
 
 @app.route('/bestof')
 def bestof():
-
+    best_titles = books["title"][:5].to_list()
+    best_authors = books["authors"][:5].to_list()
+    best_img_urls = books["image_url"][:5].to_list()
     # This will render the bestof.html Please see that file. 
-    return render_template('bestof.html')
+    return render_template('bestof.html', best_books=zip(best_authors, best_titles, best_img_urls))
 
 def main():
     app.run(host='0.0.0.0', port=3001, debug=True)
