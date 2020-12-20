@@ -4,13 +4,14 @@
 {% block content %}
     <h1 class="text-center">Result</h1>
         {% for authors, title, url in best_books %}
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-md-5">
                     <img src={{url}} alt="linkedin" class="img-fluid">
                 </div>
                 <div class="col-md-7">
                     <h5 class="mb-1">{{title}}</h5>
                 </div>
+            </div>
                        
         {% endfor %}
 
