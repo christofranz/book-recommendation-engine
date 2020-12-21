@@ -3,16 +3,20 @@
 
 {% block content %}
     <h1 class="text-center">Result - Recommendations for user_id: {{query}}</h1>
-    {% for authors, title, url in recommendation_infos %}
-        <div class="row mb-3">
-            <div class="col-md-5">
-                <img src={{url}} alt="book_img" class="img-fluid">
-            </div>
-            <div class="col-md-7">
-                <h5 class="mb-1">{{title}}</h5>
-            </div>
-        </div>
-                
-    {% endfor %}
+    <ol class="gradient-list">
+        {% for authors, title, url in recommendation_infos %}
+            <li>
+                <div class="row vertical-align">
+                    <div class="col-md-2">
+                        <img src={{url}} alt="book_img" class="img-fluid">
+                    </div>
+                    <div class="col-md-10">
+                        <p style="font-size:21px">{{authors}} with {{title}}</p>
+                    </div>
+                </div>
+            </li>
+                          
+        {% endfor %}
+    </ol>
 
 {% endblock %}
