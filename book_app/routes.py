@@ -2,7 +2,8 @@ import os
 import pandas as pd
 from book_app import app
 from flask import Flask, render_template, request
-from filtering.collaborative_filtering import get_read_books, create_user_book_dict, make_user_based_recommendation, find_closest_neighbors, get_book_info
+from filtering.collaborative_filtering import get_read_books, create_user_book_dict, make_user_based_recommendation, find_closest_neighbors
+from filtering.common import get_book_info, find_book_ids
 
 # dir_path = os.path.dirname(os.path.realpath(__file__))
 # TODO: safe filepath handling
@@ -36,12 +37,7 @@ def recommend():
     recommendations = make_user_based_recommendation(query, dist_df, user_book_matrix, get_read_books(user_book_matrix, query), books_read)
 
     # obtain meta data of recommendations
-    all_authors, all_titles, all_img_urls = [], [], []
-    for rec in recommendations:
-        authors, title, img_url = get_book_info(rec, books)
-        all_authors.append(authors)
-        all_titles.append(title)
-        all_img_urls.append(img_url)
+    all_authors, all_titles, all_img_urls = get_book_info(recommendations, books)
 
     # This will render the recommend.html Please see that file. 
     return render_template(
@@ -49,4 +45,22 @@ def recommend():
         query=query,
         recommendations=recommendations,
         recommendation_infos=zip(all_authors, all_titles, all_img_urls)
+    )
+
+
+@app.route('/find')
+def find():
+    # save user input in query
+    author = request.args.get('author', '')
+    title = request.args.get('title', '')
+
+    related_book_ids = find_book_ids(books, author, title)
+    all_authors, all_titles, _ = get_book_info(related_book_ids, books)
+
+    # This will render the find.html Please see that file. 
+    return render_template(
+        'find.html',
+        author=author,
+        title=title,
+        books_found=zip(all_authors, all_titles)
     )

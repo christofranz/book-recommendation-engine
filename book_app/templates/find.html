@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+
+
+{% block content %}
+    <h1 class="text-center">Search Result</h1>
+    <p style="text-align: center;">Author entered: {{author}}</p>
+    <p style="text-align: center;">Ttile entered: {{title}}</p>
+    <ul class="list-group">
+        {% for authors, title in books_found %}
+            <li class="list-group-item list-group-item-dark text-center">{{authors}}: {{title}}</li>
+        {% endfor %}
+    
+
+{% endblock %}
