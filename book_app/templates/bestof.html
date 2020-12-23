@@ -1,22 +1,41 @@
 {% extends "index.html" %}
 
-
 {% block content %}
     <h1 class="text-center">Most Popular Books in the Dataset</h1>
     <ol class="gradient-list">
-        {% for authors, title, url in best_books %}
+        {% for book_id, liked, authors, title, url in best_books %}
             <li>
                 <div class="row vertical-align">
                     <div class="col-md-2">
                         <img src={{url}} alt="book_img" class="img-fluid">
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <p style="font-size:21px">{{authors}} with {{title}}</p>
+                    </div>
+                    <div class="col-md-2">
+                        {% if liked == 1 %}
+                            <label class="checkbox">
+                                <input type="checkbox" name="{{book_id}}" onclick="changeBookPreference('{{book_id}}', this)" checked/>
+                                <span>Like</span>
+                            </label>
+                        {% else %}
+                            <label class="checkbox">
+                                <input type="checkbox" name="{{book_id}}" onclick="changeBookPreference('{{book_id}}', this)" />
+                                <span>Like</span>
+                            </label>
+                        {% endif %}
+                        <!--
+                        <form>
+                            <div class="form-check" id="checkboxform">--><!--onchange="putCookie(100);"  onclick="checkAddress(document.getElementsByTagName('form'));"-->
+                        <!--
+                                <input type="checkbox" class="form-check-input" name="checkOne" onclick="checkAdress(this)" />
+                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                            </div>
+                        </form>-->
                     </div>
                 </div>
             </li>
                       
         {% endfor %}
     </ol>
-
 {% endblock %}

@@ -80,6 +80,45 @@ body {
   padding-bottom: 20px;
 }
 
+/* Checkbox CONTENT
+-------------------------------------------------- */
+
+.checkbox {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+
+.checkbox > span {
+  color: #34495E;
+  vertical-align: middle;
+}
+
+.checkbox > input {
+  height: 15px;
+  width: 15px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  border: 2px #34495E;
+  border-radius: 4px;
+  outline: none;
+  transition-duration: 0.3s;
+  background-color: #4179b8;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.checkbox > input:checked {
+  border: 2px #34495E;
+  background-color: #6ecf41;
+}
+
+.checkbox > input:active {
+  border: 2px #34495E;
+}
 
 /* Featurettes
 ------------------------- */

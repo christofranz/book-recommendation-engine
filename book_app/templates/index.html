@@ -24,6 +24,36 @@
     <link href="/static/styles/carousel.css" rel="stylesheet">
     <link href="/static/styles/box-shadow.css" rel="stylesheet">
 
+    <script>
+
+      function setCookie(name,value,days) {
+          var expires = "";
+          if (days) {
+              var date = new Date();
+              date.setTime(date.getTime() + (days*24*60*60*1000));
+              expires = "; expires=" + date.toUTCString();
+          }
+          document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+      }
+      
+      function eraseCookie(name) {   
+        document.cookie = name+'=; Max-Age=-99999999;';  
+      }
+
+      function changeBookPreference(bookId, checkbox)
+      {
+          if (checkbox.checked)
+          {
+            setCookie("like_book_" + bookId, 1);
+          }
+          else
+          {
+            eraseCookie("like_book_" + bookId);
+          }
+          return true
+      }
+    </script>
+
   </head>
 <!-- NAVBAR
 ================================================== -->
