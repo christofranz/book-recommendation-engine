@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from book_app import app
 from flask import Flask, render_template, request, make_response
-from filtering.collaborative_filtering import get_read_books, create_user_book_dict, make_user_based_recommendation, find_closest_neighbors
+from filtering.collaborative_filtering import get_read_books, create_user_book_dict, make_recommendations_for_new_user, make_user_based_recommendation
 from filtering.common import get_book_info, find_book_ids
 
 # dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -22,7 +22,7 @@ def books_liked_online(cookie_name_start="like_book_"):
     for cookie_name in all_cookies.keys():
         if cookie_name.startswith(cookie_name_start):
             books_in_cache.append(cookie_name[len(cookie_name_start):]) # to only obtain the book_id
-    print(books_in_cache)
+
     return books_in_cache
 
 
@@ -39,7 +39,7 @@ def are_books_liked(book_ids):
             books_liked.append(1)
         else:
             books_liked.append(0)
-    print(books_liked)
+
     return books_liked
 
 
@@ -104,4 +104,30 @@ def find():
         author=author,
         title=title,
         books_found=zip(related_book_ids, books_liked, all_authors, all_titles, all_img_urls)
+    )
+
+@app.route('/myrecommendations')
+def myrecommendations():
+    # get liked books from cookies
+    books_liked = books_liked_online()
+    if len(books_liked) > 0:
+
+        # get recommendations for the online user
+        recommendations = make_recommendations_for_new_user(books_liked, user_book_matrix, books_read)
+        
+        # obtain meta data of recommendations
+        all_authors, all_titles, all_img_urls = get_book_info(recommendations, books)
+
+        success = 1
+    
+    else:
+        recommendations, all_authors, all_titles, all_img_urls = [], [], [], []
+        success = 0
+
+    # This will render the recommend.html Please see that file. 
+    return render_template(
+        'myrecommendations.html',
+        rec_success=success,
+        recommendations=recommendations,
+        recommendation_infos=zip(all_authors, all_titles, all_img_urls)
     )

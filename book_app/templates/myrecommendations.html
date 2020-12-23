@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+
+
+{% block content %}
+    {% if rec_success == 1 %}
+        <h1 class="text-center">Result - Recommendations for you</h1>
+        <ol class="gradient-list">
+            {% for authors, title, url in recommendation_infos %}
+                <li>
+                    <div class="row vertical-align">
+                        <div class="col-md-2">
+                            <img src={{url}} alt="book_img" class="img-fluid">
+                        </div>
+                        <div class="col-md-10">
+                            <p style="font-size:21px">{{authors}} with {{title}}</p>
+                        </div>
+                    </div>
+                </li>
+                            
+            {% endfor %}
+        </ol>
+    {% else %}
+        <p>Either you have cookies disabled for this website or you have not liked any book yet.</p>
+    {% endif %}
+    
+
+{% endblock %}

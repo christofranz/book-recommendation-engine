@@ -70,7 +70,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">Book Recommendation</a>
+              <a class="navbar-brand" href="/">Book Recommendation</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
@@ -128,7 +128,7 @@
           <div class="container">
             <div class="carousel-caption">
               <h1>Find Books</h1>
-              <p>Search the database by author or title.</p>
+              <p>Search the database by author or title. Mark books you like to get individual recommendations.</p>
               <p><a class="btn btn-lg btn-primary" href="#" role="button">Find</a></p>
             </div>
           </div>
@@ -137,9 +137,9 @@
           <img class="third-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
           <div class="container">
             <div class="carousel-caption">
-              <h1>Placeholder</h1>
-              <p>Placeholder for getting recommendations for new users.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Button</a></p>
+              <h1>Recommendations for existing users</h1>
+              <p>Get recommendations for existing users from the database.</p>
+              <p><a class="btn btn-lg btn-primary" href="#" role="button">Show me</a></p>
             </div>
           </div>
         </div>
@@ -165,8 +165,8 @@
       <div class="row">
         <div class="col-lg-4">
           <img class="img-circle" src="/static/img/githublogo.png" alt="Generic placeholder image" width="140" height="140">
-          <h2>Get Recommendations</h2>
-          <p>Type a user_id, I show you the recommendations.</p>
+          <h2>Show Recommendations</h2>
+          <p>Type a user_id, I show you the corresponding recommendations.</p>
           <form action="/recommend" method="get">
             <p><input type="text" class="form-control form-control-lg" name="query" placeholder="Enter a user id"></p>
             <p><button type="submit" class="btn btn-default">Show Recommendations &raquo;</button></p>
@@ -174,19 +174,20 @@
           <!--<p><a class="btn btn-default" href="#" role="button">Show Recommendations &raquo;</a></p>-->
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-          <img class="img-fluid" src="https://images.gr-assets.com/books/1447303603m/2767052.jpg" alt="Book cover most popular book"> <!--width="140" height="140"-->
-          <h2>{{titles[0]}}</h2>
-          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
           <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
           <h2>Find Book</h2>
+          <p>Enter an author and/or a title to search for books in the database.</p>
           <form class="form-group" action="/find" method="get">
             <p><input type="text" class="form-control form-control-lg" name="author" placeholder="Enter author"></p>
             <p><input type="text" class="form-control form-control-lg" name="title" placeholder="Enter title"></p>
             <p><button type="submit" class="btn btn-default">Find Books &raquo;</button></p>
           </form>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-fluid" src="https://images.gr-assets.com/books/1447303603m/2767052.jpg" alt="Book cover most popular book"> <!--width="140" height="140"-->
+          <h2>Get Your Own Recommendations</h2>
+          <p>If you have enabled cookies for this website and marked books you like, you can see your individual recommendations as well.</p>
+          <p><a class="btn btn-default" href="myrecommendations" role="button">Show My Recommendations &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div><!-- /.row -->
 
