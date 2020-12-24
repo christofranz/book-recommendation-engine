@@ -11,6 +11,11 @@ books = pd.read_csv("data/books.csv")
 user_book_matrix = pd.read_pickle("data/user_book_matrix.pkl")
 dist_df = pd.read_pickle("data/user_distance.pkl")
 books_read = create_user_book_dict(user_book_matrix)
+user_book_rating = pd.read_pickle("data/user_book_list.pkl")
+
+# limit for runtime of webpage so far
+user_book_rating = user_book_rating[:10000]
+
 
 def books_liked_online(cookie_name_start="like_book_"):
     """
@@ -113,7 +118,7 @@ def myrecommendations():
     if len(books_liked) > 0:
 
         # get recommendations for the online user
-        recommendations = make_recommendations_for_new_user(books_liked, user_book_matrix, books_read)
+        recommendations = make_recommendations_for_new_user(books_liked, user_book_rating)
         
         # obtain meta data of recommendations
         all_authors, all_titles, all_img_urls = get_book_info(recommendations, books)

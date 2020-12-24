@@ -18,18 +18,21 @@ def create_user_book_dict(user_book_matrix):
     return books_read
 
 
-def compute_euclidean_dist_for_new_user(books_user_new, book_ratings, user2, books_read_dict, user_book_matrix):
+def compute_euclidean_dist_for_new_user(books_user_new, user2, user_book_rating):
     """TODO"""
     # books_user_new has to be a list of int
-    # book_ratings a numpy array of ints
-    books_user2 = books_read_dict[user2]
-    both_read = list(set(books_user_new).intersection(books_user2))
+    user2_book_rating = user_book_rating[user_book_rating["user_id"]==user2]
+    books_user2 = user2_book_rating["book_id"].to_list()
+    both_read = sorted(list(set(books_user_new).intersection(books_user2)), reverse=False)
 
-    book_ratings = np.full(len(both_read), 5) #TODO: take corresponding real ratings
+    ratings_new_user = np.full(len(both_read), 5) #TODO: take corresponding real ratings
+    # select only the ratings of user2 for books both read
+    ratings_user2 = []
+    for book_id in both_read:
+        ratings_user2.append(int(user2_book_rating[user2_book_rating["book_id"] == book_id]["rating"]))
 
-    if len(both_read) > 1:
-        b = user_book_matrix.loc[user2][both_read]
-        dist = np.linalg.norm(book_ratings-b)
+    if len(both_read) >= 1:
+        dist = np.linalg.norm(ratings_new_user-np.array(ratings_user2))
     else:
         dist = 10000*5 # highest possible difference
     return dist
@@ -49,19 +52,17 @@ def find_closest_neighbors(user_id, dist_df):
     return closest_neighbors
 
 
-def find_closest_neighbors_for_new_users(books_user_new, books_read_dict, user_book_matrix):
-    """TODO"""
-    n_books_liked = len(books_user_new)
-    book_ratings = np.full(n_books_liked, 5, dtype=int) #TODO: take real ratings and not 5 for all books
-    
+def find_closest_neighbors_for_new_users(books_user_new, user_book_rating):
+    """TODO"""   
     user2 = []
     dist = []
-    for user_id2 in user_book_matrix.index.to_numpy():
-        d = compute_euclidean_dist_for_new_user(books_user_new, book_ratings, user_id2, books_read_dict, user_book_matrix)
+    for user_id2 in user_book_rating["user_id"].unique():
+        d = compute_euclidean_dist_for_new_user(books_user_new, user_id2, user_book_rating)
         user2.append(user_id2)
         dist.append(d)
     
     dist_df = pd.DataFrame({"user2": user2, "dist": dist})
+    print(dist_df[:20])
     closest_neighbors = list(dist_df.sort_values(["dist"], ascending=True)["user2"])
     
     return closest_neighbors
@@ -77,6 +78,14 @@ def get_books_liked_by_user(user_id, user_book_matrix, books_read, min_rating=3)
     '''
     book_ratings = user_book_matrix.loc[user_id][books_read[user_id]]
     books_liked = list(book_ratings[book_ratings >= min_rating].keys())
+    return books_liked
+
+def get_books_liked_by_user_2(user_id, user_book_rating, min_rating):
+    """TODO
+    Based on the new data input structure of user_book_rating
+    """
+    user2_book_rating = user_book_rating[user_book_rating["user_id"]==user_id]
+    books_liked = user2_book_rating[user2_book_rating["rating"] >= min_rating]["book_id"].to_list()
     return books_liked
 
 
@@ -106,15 +115,15 @@ def make_user_based_recommendation(user_id, dist_df, user_book_matrix, books_rea
     return recommendations
 
 
-def make_recommendations_for_new_user(books_liked, user_book_matrix, books_read, num_rec=10, min_rating=3):
+def make_recommendations_for_new_user(books_liked, user_book_rating, num_rec=10, min_rating=3):
     """TODO"""
     # convert liked books to int
     books_user_new = [int(book_id) for book_id in books_liked]
 
     recommendations = []
     # get recommendations from the closest neighbors
-    for neighbor in find_closest_neighbors_for_new_users(books_user_new, books_read, user_book_matrix):
-        liked_by_neighbor = get_books_liked_by_user(neighbor, user_book_matrix, books_read, min_rating)
+    for neighbor in find_closest_neighbors_for_new_users(books_user_new, user_book_rating):
+        liked_by_neighbor = get_books_liked_by_user_2(neighbor, user_book_rating, min_rating)
         books_not_read = list(np.setdiff1d(liked_by_neighbor, books_user_new, assume_unique=False))
         books_not_recommended = list(np.setdiff1d(books_not_read, recommendations, assume_unique=False))
 
