@@ -52,14 +52,20 @@ def find_closest_neighbors(user_id, dist_df):
     return closest_neighbors
 
 
-def find_closest_neighbors_for_new_users(books_user_new, user_book_rating):
+def find_closest_neighbors_for_new_users(books_user_new, user_book_rating, break_point_close_neighbors=100, threshold=1.5):
     """TODO"""   
     user2 = []
     dist = []
+    n_close_neighbors = 0
     for user_id2 in user_book_rating["user_id"].unique():
         d = compute_euclidean_dist_for_new_user(books_user_new, user_id2, user_book_rating)
         user2.append(user_id2)
         dist.append(d)
+
+        if d <= threshold:
+            n_close_neighbors += 1
+            if n_close_neighbors >= break_point_close_neighbors:
+                break
     
     dist_df = pd.DataFrame({"user2": user2, "dist": dist})
     print(dist_df[:20])

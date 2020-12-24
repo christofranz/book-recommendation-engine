@@ -14,7 +14,7 @@ books_read = create_user_book_dict(user_book_matrix)
 user_book_rating = pd.read_pickle("data/user_book_list.pkl")
 
 # limit for runtime of webpage so far
-user_book_rating = user_book_rating[:10000]
+# user_book_rating = user_book_rating[:10000]
 
 
 def books_liked_online(cookie_name_start="like_book_"):
