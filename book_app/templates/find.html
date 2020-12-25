@@ -2,36 +2,12 @@
 
 
 {% block content %}
-    <h1 class="text-center">Search Result</h1>
-    <p style="text-align: center;">Author entered: {{author}}</p>
-    <p style="text-align: center;">Ttile entered: {{title}}</p>
-    <ol class="gradient-list">
-        {% for book_id, liked, authors, title, url in books_found %}
-            <li>
-                <div class="row vertical-align">
-                    <div class="col-md-2">
-                        <img src={{url}} alt="book_img" class="img-fluid">
-                    </div>
-                    <div class="col-md-8">
-                        <p style="font-size:21px">{{authors}} with {{title}}</p>
-                    </div>
-                    <div class="col-md-2">
-                        {% if liked == 1 %}
-                            <label class="checkbox">
-                                <input type="checkbox" name="{{book_id}}" onclick="changeBookPreference('{{book_id}}', this)" checked/>
-                                <span>Like</span>
-                            </label>
-                        {% else %}
-                            <label class="checkbox">
-                                <input type="checkbox" name="{{book_id}}" onclick="changeBookPreference('{{book_id}}', this)" />
-                                <span>Like</span>
-                            </label>
-                        {% endif %}
-                    </div>
-                </div>
-            </li>
-                      
-        {% endfor %}
-    </ol>
+    <h1 class="text-center">Find Books</h1>
+    <p>Enter an author and/or a title to search for books in the database.</p>
+    <form class="form-group" action="/searchresults" method="get">
+        <p><input type="text" class="form-control form-control-lg" name="author" placeholder="Enter author"></p>
+        <p><input type="text" class="form-control form-control-lg" name="title" placeholder="Enter title"></p>
+        <p><button type="submit" class="btn btn-default">Find Books &raquo;</button></p>
+    </form>
 
 {% endblock %}

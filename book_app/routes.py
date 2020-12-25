@@ -88,8 +88,14 @@ def bestof():
     return render_template('bestof.html', best_books=zip(book_ids, books_liked, best_authors, best_titles, best_img_urls))
 
 
-@app.route('/recommend')
-def recommend():
+@app.route('/enteruserid')
+def enteruserid():
+    # This will render the enteruserid.html Please see that file. 
+    return render_template('enteruserid.html')
+
+
+@app.route('/userrecommendations')
+def userrecommendations():
     # save user input in query
     query = int(request.args.get('query', '')) #TODO check validity
     # obtain the recommendations for the requested user
@@ -98,9 +104,9 @@ def recommend():
     # obtain meta data of recommendations
     all_authors, all_titles, all_img_urls = get_book_info(recommendations, books)
 
-    # This will render the recommend.html Please see that file. 
+    # This will render the userrecommendations.html Please see that file. 
     return render_template(
-        'recommend.html',
+        'userrecommendations.html',
         query=query,
         recommendations=recommendations,
         recommendation_infos=zip(all_authors, all_titles, all_img_urls)
@@ -109,6 +115,12 @@ def recommend():
 
 @app.route('/find')
 def find():
+    # This will render the find.html Please see that file. 
+    return render_template('find.html')
+
+
+@app.route('/searchresults')
+def searchresults():
     # save user input in query
     author = request.args.get('author', '')
     title = request.args.get('title', '')
@@ -121,9 +133,9 @@ def find():
     related_book_ids= [str(book_id) for book_id in related_book_ids]
     books_liked = are_books_liked(related_book_ids)
 
-    # This will render the find.html Please see that file. 
+    # This will render the searchresults.html Please see that file. 
     return render_template(
-        'find.html',
+        'searchresults.html',
         author=author,
         title=title,
         books_found=zip(related_book_ids, books_liked, all_authors, all_titles, all_img_urls)

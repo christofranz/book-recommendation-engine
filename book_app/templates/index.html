@@ -74,9 +74,10 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
+                <li class="active"><a href="/">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="https://github.com/zygmuntz/goodbooks-10k/">Data Source</a></li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                   <ul class="dropdown-menu">
@@ -106,6 +107,7 @@
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
       </ol>
       <div class="carousel-inner" role="listbox">
         <div class="item active">
@@ -119,7 +121,7 @@
             </div>
             <form action="/bestof" method="get">
               <div class="col-lg-offset-5">
-                  <button type="submit" class="btn btn-lg btn-success">Show me</button>
+                  <button type="submit" class="btn btn-lg btn-success">Show me &raquo;</button>
               </div>
             </form>
           </div>
@@ -130,7 +132,7 @@
             <div class="carousel-caption">
               <h1>Find Books</h1>
               <p>Search the database by author or title. Mark books you like to get individual recommendations.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Find</a></p>
+              <p><a class="btn btn-lg btn-primary" href="find" role="button">Find Books &raquo;</a></p>
             </div>
           </div>
         </div>
@@ -140,7 +142,17 @@
             <div class="carousel-caption">
               <h1>Recommendations for existing users</h1>
               <p>Get recommendations for existing users from the database.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Show me</a></p>
+              <p><a class="btn btn-lg btn-primary" href="enteruserid" role="button">Enter Id &raquo;</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img class="fourth-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Fourth slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Get Your Own Recommendations</h1>
+              <p>If you have enabled cookies for this website and marked books you like, you can see your individual recommendations as well.</p>
+              <p><a class="btn btn-lg btn-primary" href="myrecommendations" role="button">Show My Recommendations &raquo;</a></p>
             </div>
           </div>
         </div>
@@ -162,40 +174,7 @@
 
     <div class="container marketing">
       {% block content %}
-      <!-- Three columns of text below the carousel -->
-      <div class="row">
-        <div class="col-lg-4">
-          <img class="img-circle" src="/static/img/githublogo.png" alt="Generic placeholder image" width="140" height="140">
-          <h2>Show Recommendations</h2>
-          <p>Type a user_id, I show you the corresponding recommendations.</p>
-          <form action="/recommend" method="get">
-            <p><input type="text" class="form-control form-control-lg" name="query" placeholder="Enter a user id"></p>
-            <p><button type="submit" class="btn btn-default">Show Recommendations &raquo;</button></p>
-          </form>
-          <!--<p><a class="btn btn-default" href="#" role="button">Show Recommendations &raquo;</a></p>-->
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-          <h2>Find Book</h2>
-          <p>Enter an author and/or a title to search for books in the database.</p>
-          <form class="form-group" action="/find" method="get">
-            <p><input type="text" class="form-control form-control-lg" name="author" placeholder="Enter author"></p>
-            <p><input type="text" class="form-control form-control-lg" name="title" placeholder="Enter title"></p>
-            <p><button type="submit" class="btn btn-default">Find Books &raquo;</button></p>
-          </form>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-fluid" src="https://images.gr-assets.com/books/1447303603m/2767052.jpg" alt="Book cover most popular book"> <!--width="140" height="140"-->
-          <h2>Get Your Own Recommendations</h2>
-          <p>If you have enabled cookies for this website and marked books you like, you can see your individual recommendations as well.</p>
-          <p><a class="btn btn-default" href="myrecommendations" role="button">Show My Recommendations &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-      </div><!-- /.row -->
-
-
       <!-- START THE FEATURETTES -->
-
-      <hr class="featurette-divider">
 
       <div class="row featurette">
         <div class="col-md-7">

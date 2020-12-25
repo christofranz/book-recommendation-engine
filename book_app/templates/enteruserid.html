@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+
+
+{% block content %}
+    <h1 class="text-center">RGet Recommendations For Existing Users</h1>
+    <p>Type a user_id, I show you the corresponding recommendations.</p>
+    <form action="/userrecommendations" method="get">
+        <p><input type="text" class="form-control form-control-lg" name="query" placeholder="Enter a user id"></p>
+        <p><button type="submit" class="btn btn-default">Show Recommendations &raquo;</button></p>
+    </form>
+
+{% endblock %}
