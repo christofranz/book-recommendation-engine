@@ -198,11 +198,12 @@
 
       <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading">The dataset. <span class="text-muted">What is used for recommendations?</span></h2>
+          <p class="lead">For this book recommendation engine prototype a dataset of <b>{{n_books}}</b> books and <b>{{n_ratings}}</b> ratings of <b>{{n_users}}</b> users is used.</p>
         </div>
         <div class="col-md-5">
-          <img class="featurette-image img-responsive center-block" src="holder.js/500x500/auto" alt="Generic placeholder image">
+          <img class="featuette-image img-responsive center-block" src="/static/img/thejakartapost.jpeg" alt="jarkartapost books">
+          <p><i>Source: </i><a href="https://www.thejakartapost.com/">thejakartapost.com</a></p>
         </div>
       </div>
 
@@ -210,11 +211,11 @@
 
       <div class="row featurette">
         <div class="col-md-7 col-md-push-5">
-          <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
+          <h2 class="featurette-heading">Users and Ratings. <span class="text-muted">How often did the user rate a book?</span></h2>
           <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
         </div>
         <div class="col-md-5 col-md-pull-7">
-          <img class="featurette-image img-responsive center-block" src="https://images.gr-assets.com/books/1447303603m/2767052.jpg" alt="Generic placeholder image">
+          <div id="{{ids[1]}}"></div>
         </div>
       </div>
 
@@ -222,11 +223,25 @@
 
       <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading">Books and Ratings. <span class="text-muted">How many ratings did the books get?</span></h2>
+          <p class="lead">Most books have less then 1000 ratings. However, 536 books have more then 2000 ratings and the top ten books have 176851 ratings together.</p>
         </div>
         <div class="col-md-5">
-          <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+          <!--<img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">-->
+          <div id="{{ids[2]}}"></div>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Distribution of Ratings. <span class="text-muted">How do the users rate the books?</span></h2>
+          <p class="lead">The users tend to give positive feedback. The average rating for a book is 3.92, almost 4. More frequently a book got the rating 5 than 3.</p>
+        </div>
+        <div class="col-md-5">
+          <!--<img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">-->
+          <div id="{{ids[0]}}"></div>
         </div>
       </div>
 
@@ -247,6 +262,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -254,5 +270,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.7/holder.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript">
+      // plots the figure with id
+      // id much match the div id above in the html
+      var figures = {{figuresJSON | safe}};
+      var ids = {{ids | safe}};
+      for(var i in figures) {
+          Plotly.plot(ids[i],
+              figures[i].data,
+              figures[i].layout || {});
+      }
+    </script>
   </body>
 </html>

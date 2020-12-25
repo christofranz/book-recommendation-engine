@@ -1,13 +1,18 @@
+import json
 import os
+import plotly
+
 import pandas as pd
 from book_app import app
 from flask import Flask, render_template, request, make_response
 from filtering.collaborative_filtering import get_read_books, create_user_book_dict, make_recommendations_for_new_user, make_user_based_recommendation
 from filtering.common import get_book_info, find_book_ids
+from filtering.wrangle_data import return_figures
 
 # dir_path = os.path.dirname(os.path.realpath(__file__))
 # TODO: safe filepath handling
 books = pd.read_csv("data/books.csv")
+ratings = pd.read_csv("data/ratings.csv")
 user_book_matrix = pd.read_pickle("data/user_book_matrix.pkl")
 dist_df = pd.read_pickle("data/user_distance.pkl")
 books_read = create_user_book_dict(user_book_matrix)
@@ -52,8 +57,21 @@ def are_books_liked(book_ids):
 @app.route('/')
 @app.route('/index')
 def index():
-    first_title = books.iloc[0].title
-    return render_template('index.html', titles=[first_title])
+    # number of books and users
+    n_books = books.shape[0]
+    n_users = ratings.groupby(["user_id"]).count().shape[0]
+    n_ratings = ratings.shape[0]
+
+    # get plotly figures
+    figures = return_figures(books, ratings)
+
+    # plot ids for the html id tag
+    ids = ['figure-{}'.format(i) for i, _ in enumerate(figures)]
+
+    # Convert the plotly figures to JSON for javascript in html template
+    figuresJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template('index.html', n_books=n_books, n_users=n_users, n_ratings=n_ratings,ids=ids,
+                           figuresJSON=figuresJSON)
   
 
 @app.route('/bestof')
