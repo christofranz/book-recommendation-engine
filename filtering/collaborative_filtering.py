@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+from filtering.common import get_books_liked_by_user
 
 def compute_euclidean_dist_for_user(user1_book_rating, books_user1, user2, user_book_rating):
     """Compute euclidean distance for two existing users from the dataset.
@@ -136,45 +137,6 @@ def find_closest_neighbors_for_new_users(books_user_new, user_book_rating, break
     closest_neighbors = list(dist_df.sort_values(["dist"], ascending=True)["user2"])
     
     return closest_neighbors
-
-
-def get_books_liked_by_user(user_id, user_book_rating, min_rating):
-    """Get books which the user liked.
-
-    :param user_id: User for which the closest neighbor will be find
-    :type: int
-    :param user_book_rating: Ratings of each user for each book read
-    :type: pandas dataframe with cols ["user_id", "book_id", "rating"]
-    :param min_rating: Minimal rating that defines if a user liked a book
-    :type: int
-    :return: Books which got at least the minimal rating by the user
-    :rtype: List of ints
-    """
-    user2_book_rating = user_book_rating[user_book_rating["user_id"]==user_id]
-    books_liked = user2_book_rating[user2_book_rating["rating"] >= min_rating]["book_id"].to_list()
-    return books_liked
-
-
-def get_book_info(book_id, books):
-    """Obtain meta data of a certain book.
-    
-    :param book_id: Book to look up
-    :type: int
-    :param books: Dataframe containing the meta data
-    :type: pandas dataframe
-    :return: Meta data for the book id
-    :rtype: str, str, str
-    """
-    book_info = books.loc[books["book_id"]==book_id]
-    if book_info.shape[0]==0:
-        raise ValueError("Could not find book_id {} in the dataset.".format(book_id))
-
-    # get meta data from book dataframe
-    authors = book_info.squeeze().authors
-    title = book_info.squeeze().title
-    img_url = book_info.squeeze().image_url
-
-    return authors, title, img_url
 
 
 def make_user_based_recommendation(user_id, user_book_rating, num_rec=10, min_rating=3):
