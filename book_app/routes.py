@@ -1,11 +1,10 @@
 import json
-import os
 import plotly
 
 import pandas as pd
 from book_app import app
-from flask import Flask, render_template, request, make_response
-from filtering.collaborative_filtering import get_read_books, create_user_book_dict, make_recommendations_for_new_user, make_user_based_recommendation
+from flask import Flask, render_template, request
+from filtering.collaborative_filtering import make_recommendations_for_new_user, make_user_based_recommendation
 from filtering.common import get_book_info, find_book_ids
 from filtering.wrangle_data import return_figures
 

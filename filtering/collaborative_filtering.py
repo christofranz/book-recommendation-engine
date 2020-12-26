@@ -2,25 +2,20 @@ import pandas as pd
 import numpy as np
 
 
-def get_read_books(user_book_matrix, user_id):
-    """TODO"""
-    read_books = list(user_book_matrix.loc[user_id][~user_book_matrix.loc[user_id].isna()].keys())
-    return read_books
-
-
-def create_user_book_dict(user_book_matrix):
-    """TODO"""
-    all_users = user_book_matrix.index.to_numpy()
-    books_read = {}
-    for user in all_users:
-        books_read[user] = get_read_books(user_book_matrix, user)
-        
-    return books_read
-
-
 def compute_euclidean_dist_for_user(user1_book_rating, books_user1, user2, user_book_rating):
-    """TODO"""
+    """Compute euclidean distance for two existing users from the dataset.
     
+    :param user1_book_rating: Ratings of user1 for each book read
+    :type: pandas dataframe with cols ["user_id", "book_id", "rating"]
+    :param books_user1: Books read by the user recommendations are requested for
+    :type: List of ints
+    :param user2: Id of the user for who the distance is calculated
+    :type: int
+    :param user_book_rating: Ratings of each user for each book read
+    :type: pandas dataframe with cols ["user_id", "book_id", "rating"]
+    :return: Distance between user1 and user2
+    :rtype: float
+    """
     user2_book_rating = user_book_rating[user_book_rating["user_id"]==user2]
     books_user2 = user2_book_rating["book_id"].to_list()
     both_read = sorted(list(set(books_user1).intersection(books_user2)), reverse=False)
@@ -41,7 +36,17 @@ def compute_euclidean_dist_for_user(user1_book_rating, books_user1, user2, user_
 
 
 def compute_euclidean_dist_for_new_user(books_user_new, user2, user_book_rating):
-    """TODO"""
+    """Compute euclidean distance for a new and one existing user from the dataset.
+    
+    :param books_user_new: Book (ids) liked or rated by the new user
+    :type: List of ints
+    :param user2: Id of the user for who the distance is calculated
+    :type: int
+    :param user_book_rating: Ratings of each user for each book read
+    :type: pandas dataframe with cols ["user_id", "book_id", "rating"]
+    :return: Distance between the new user and user2
+    :rtype: float
+    """
     # books_user_new has to be a list of int
     user2_book_rating = user_book_rating[user_book_rating["user_id"]==user2]
     books_user2 = user2_book_rating["book_id"].to_list()
@@ -61,9 +66,23 @@ def compute_euclidean_dist_for_new_user(books_user_new, user2, user_book_rating)
 
 
 def find_closest_neighbors_for_user(user_id, user_book_rating, user1_book_rating, books_user1, break_point_close_neighbors=100, threshold=1.5):
-    '''
-    TODO
-    '''
+    """Find the closest neighbor for a certain user from the dataset.
+    
+    :param user_id: User for which the closest neighbor will be find
+    :type: int
+    :param user_book_rating: Ratings of each user for each book read
+    :type: pandas dataframe with cols ["user_id", "book_id", "rating"]
+    :param user1_book_rating: Ratings of user1 for each book read
+    :type: pandas dataframe with cols ["user_id", "book_id", "rating"]
+    :param books_user1: Books read by the user recommendations are requested for
+    :type: List of ints
+    :param break_point_close_neighbors: Parameter to stop the search if enough similar users are found
+    :type: int
+    :param threshold: Parameter that defines a close neighbor
+    :type: float
+    :return: Closest neighbors for the requested user with closest first
+    :rtype: List of ints
+    """
     user2 = []
     dist = []
     n_close_neighbors = 0
@@ -86,7 +105,19 @@ def find_closest_neighbors_for_user(user_id, user_book_rating, user1_book_rating
 
 
 def find_closest_neighbors_for_new_users(books_user_new, user_book_rating, break_point_close_neighbors=100, threshold=1.5):
-    """TODO"""   
+    """Find the closest neighbor for a new user.
+    
+    :param books_user_new: Book (ids) liked or rated by the new user
+    :type: List of ints
+    :param user_book_rating: Ratings of each user for each book read
+    :type: pandas dataframe with cols ["user_id", "book_id", "rating"]
+    :param break_point_close_neighbors: Parameter to stop the search if enough similar users are found
+    :type: int
+    :param threshold: Parameter that defines a close neighbor
+    :type: float
+    :return: Closest neighbors for the requested user with closest first
+    :rtype: List of ints
+    """   
     user2 = []
     dist = []
     n_close_neighbors = 0
@@ -108,8 +139,16 @@ def find_closest_neighbors_for_new_users(books_user_new, user_book_rating, break
 
 
 def get_books_liked_by_user(user_id, user_book_rating, min_rating):
-    """TODO
-    Based on the new data input structure of user_book_rating
+    """Get books which the user liked.
+
+    :param user_id: User for which the closest neighbor will be find
+    :type: int
+    :param user_book_rating: Ratings of each user for each book read
+    :type: pandas dataframe with cols ["user_id", "book_id", "rating"]
+    :param min_rating: Minimal rating that defines if a user liked a book
+    :type: int
+    :return: Books which got at least the minimal rating by the user
+    :rtype: List of ints
     """
     user2_book_rating = user_book_rating[user_book_rating["user_id"]==user_id]
     books_liked = user2_book_rating[user2_book_rating["rating"] >= min_rating]["book_id"].to_list()
@@ -117,16 +156,41 @@ def get_books_liked_by_user(user_id, user_book_rating, min_rating):
 
 
 def get_book_info(book_id, books):
-    """TODO"""
+    """Obtain meta data of a certain book.
+    
+    :param book_id: Book to look up
+    :type: int
+    :param books: Dataframe containing the meta data
+    :type: pandas dataframe
+    :return: Meta data for the book id
+    :rtype: str, str, str
+    """
     book_info = books.loc[books["book_id"]==book_id]
+    if book_info.shape[0]==0:
+        raise ValueError("Could not find book_id {} in the dataset.".format(book_id))
+
+    # get meta data from book dataframe
     authors = book_info.squeeze().authors
     title = book_info.squeeze().title
     img_url = book_info.squeeze().image_url
+
     return authors, title, img_url
 
 
 def make_user_based_recommendation(user_id, user_book_rating, num_rec=10, min_rating=3):
-    """TODO"""
+    """Make book recommendations for an existing user from the dataset.
+
+    :param user_id: User for which the closest neighbor will be find
+    :type: int
+    :param user_book_rating: Ratings of each user for each book read
+    :type: pandas dataframe with cols ["user_id", "book_id", "rating"]
+    :param num_rec: Number of maximal recommendations for the user
+    :tpye: int
+    :param min_rating: Minimal rating that defines if a user liked a book
+    :type: int
+    :return: Book ids that are recommended for the user
+    :rtype: List of ints    
+    """
     recommendations = []
     user1_book_rating = user_book_rating[user_book_rating["user_id"]==user_id]
     books_user1 = user1_book_rating["book_id"].to_list()
@@ -146,7 +210,19 @@ def make_user_based_recommendation(user_id, user_book_rating, num_rec=10, min_ra
 
 
 def make_recommendations_for_new_user(books_liked, user_book_rating, num_rec=10, min_rating=3):
-    """TODO"""
+    """Make book recommendations for an existing user from the dataset.
+
+    :param books_liked: Book (ids) the new user liked
+    :type: List of ints
+    :param user_book_rating: Ratings of each user for each book read
+    :type: pandas dataframe with cols ["user_id", "book_id", "rating"]
+    :param num_rec: Number of maximal recommendations for the user
+    :tpye: int
+    :param min_rating: Minimal rating that defines if a user liked a book
+    :type: int
+    :return: Book ids that are recommended for the new user
+    :rtype: List of ints    
+    """
     # convert liked books to int
     books_user_new = [int(book_id) for book_id in books_liked]
 
