@@ -13,9 +13,9 @@ from filtering.wrangle_data import return_figures
 # TODO: safe filepath handling
 books = pd.read_csv("data/books.csv")
 ratings = pd.read_csv("data/ratings.csv")
-user_book_matrix = pd.read_pickle("data/user_book_matrix.pkl")
-dist_df = pd.read_pickle("data/user_distance.pkl")
-books_read = create_user_book_dict(user_book_matrix)
+# user_book_matrix = pd.read_pickle("data/user_book_matrix_full.pkl")
+# dist_df = pd.read_pickle("data/user_distance.pkl")
+# books_read = create_user_book_dict(user_book_matrix)
 user_book_rating = pd.read_pickle("data/user_book_list.pkl")
 
 # limit for runtime of webpage so far
@@ -99,7 +99,7 @@ def userrecommendations():
     # save user input in query
     query = int(request.args.get('query', '')) #TODO check validity
     # obtain the recommendations for the requested user
-    recommendations = make_user_based_recommendation(query, dist_df, user_book_matrix, get_read_books(user_book_matrix, query), books_read)
+    recommendations = make_user_based_recommendation(query, user_book_rating)
 
     # obtain meta data of recommendations
     all_authors, all_titles, all_img_urls = get_book_info(recommendations, books)
