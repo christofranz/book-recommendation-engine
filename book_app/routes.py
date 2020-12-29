@@ -3,28 +3,26 @@ import plotly
 
 import pandas as pd
 from book_app import app
-from flask import Flask, render_template, request
+from flask import render_template, request
 from filtering.collaborative_filtering import make_recommendations_for_new_user, make_user_based_recommendation
 from filtering.common import get_book_info, find_book_ids
 from filtering.wrangle_data import return_figures
 
-# dir_path = os.path.dirname(os.path.realpath(__file__))
-# TODO: safe filepath handling
+# read in data
 books = pd.read_csv("data/books.csv")
 ratings = pd.read_csv("data/ratings.csv")
-# user_book_matrix = pd.read_pickle("data/user_book_matrix_full.pkl")
-# dist_df = pd.read_pickle("data/user_distance.pkl")
-# books_read = create_user_book_dict(user_book_matrix)
 user_book_rating = pd.read_pickle("data/user_book_list.pkl")
 
-# limit for runtime of webpage so far
-# user_book_rating = user_book_rating[:10000]
+N_BEST_OF = 5 # number of best books to show
 
 
 def books_liked_online(cookie_name_start="like_book_"):
-    """
-    Reads the cookies for books the user already liked on the website.
-    TODO: return
+    """Read the cookies for books the user already liked on the website.
+    
+    :param cookie_name_start: String with which the cookies stored start
+    :type: str
+    :return: Book ids the user has liked on the website based on cookies
+    :rtype: list[int]
     """
     all_cookies = request.cookies.to_dict()
     books_in_cache = []
@@ -36,15 +34,23 @@ def books_liked_online(cookie_name_start="like_book_"):
 
 
 def are_books_liked(book_ids):
-    """TODO
+    """Check if certain books are liked by the user of the website.
     
     :param book_ids: List of book ids to verify
-    :type: array[str]
+    :type: list[str]
+    :return: If a book is liked by the user or not
+    :rtype: list[int/boolean]
     """
-    books_in_cache = books_liked_online()
-    books_liked = []
+    # get books liked from the cookies
+    books_in_cookies = books_liked_online()
+
+    # in case book_ids is an int/not a list
+    if not isinstance(book_ids, list):
+        book_ids = [book_ids]
+
+    books_liked = [] # store 1 or 0 for each book
     for book in book_ids:
-        if book in books_in_cache:
+        if book in books_in_cookies:
             books_liked.append(1)
         else:
             books_liked.append(0)
@@ -52,7 +58,7 @@ def are_books_liked(book_ids):
     return books_liked
 
 
-# index webpage displays cool visuals and receives user input text for model
+# index webpage
 @app.route('/')
 @app.route('/index')
 def index():
@@ -69,18 +75,21 @@ def index():
 
     # Convert the plotly figures to JSON for javascript in html template
     figuresJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # This will render the index.html Please see that file.
     return render_template('index.html', n_books=n_books, n_users=n_users, n_ratings=n_ratings,ids=ids,
                            figuresJSON=figuresJSON)
   
 
 @app.route('/bestof')
 def bestof():
+    # get the top N_BEST_OF books
+    book_ids = [str(book_id) for book_id in books["book_id"][:N_BEST_OF].to_list()]
+    best_titles = books["title"][:N_BEST_OF].to_list()
+    best_authors = books["authors"][:N_BEST_OF].to_list()
+    best_img_urls = books["image_url"][:N_BEST_OF].to_list()
 
-    book_ids = [str(book_id) for book_id in books["book_id"][:5].to_list()]
-    best_titles = books["title"][:5].to_list()
-    best_authors = books["authors"][:5].to_list()
-    best_img_urls = books["image_url"][:5].to_list()
-
+    # check if the books are already liked (visualization purpose)
     books_liked = are_books_liked(book_ids)
 
     # This will render the bestof.html Please see that file. 
@@ -97,6 +106,7 @@ def enteruserid():
 def userrecommendations():
     # save user input in query
     query = int(request.args.get('query', '')) #TODO check validity
+
     # obtain the recommendations for the requested user
     recommendations = make_user_based_recommendation(query, user_book_rating)
 
@@ -124,12 +134,14 @@ def searchresults():
     author = request.args.get('author', '')
     title = request.args.get('title', '')
 
+    # find relevant books from the dataset
     related_book_ids = find_book_ids(books, author, title)
     all_authors, all_titles, all_img_urls = get_book_info(related_book_ids, books)
 
-    # check which books are already liked
     # convert book ids to strings
     related_book_ids= [str(book_id) for book_id in related_book_ids]
+    
+    # check if the books are already liked (visualization purpose)
     books_liked = are_books_liked(related_book_ids)
 
     # This will render the searchresults.html Please see that file. 
@@ -155,6 +167,7 @@ def myrecommendations():
         success = 1
     
     else:
+        # if no books are liked, no recommendation can be made
         recommendations, all_authors, all_titles, all_img_urls = [], [], [], []
         success = 0
 
