@@ -62,7 +62,7 @@ def index():
     n_ratings = ratings.shape[0]
 
     # get plotly figures
-    figures = return_figures(books, ratings)
+    figures = return_figures(ratings)
 
     # plot ids for the html id tag
     ids = ['figure-{}'.format(i) for i, _ in enumerate(figures)]

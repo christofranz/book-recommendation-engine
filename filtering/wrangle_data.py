@@ -1,16 +1,14 @@
-import pandas as pd
 import plotly.graph_objs as go
 
-def return_figures(books, ratings):
-    """Creates plotly visualizations
+def return_figures(ratings):
+    """Create plotly visualizations for webapp.
 
-    Args:
-        TODO
-
-    Returns:
-        list (dict): list containing the plotly visualizations
-
+    :param ratings: Dataframe containing the ratings
+    :type: Pandas dataframe with columns ["user_id", "book_id", "rating"]
+    :return: List containing the plotly visualizations
+    :rtype: List (dict)
     """
+    # histogram for the distribution of ratings
     graph_one = [go.Histogram(x=ratings["rating"],
                 marker_color='#568cbf',
                 opacity=0.75)]
@@ -23,7 +21,7 @@ def return_figures(books, ratings):
 
     ratings_per_user = ratings.groupby(["user_id"]).count()["rating"].reset_index(name="rating_counts")
 
-    # second chart plots ararble land for 2015 as a bar chart    
+    # histogram for the distribution of ratings per user
     graph_two = [go.Histogram(x=ratings_per_user["rating_counts"],
                 xbins=dict(
                     size=10
@@ -36,6 +34,7 @@ def return_figures(books, ratings):
                 bargap=0.05,
                 )
     
+    # histogram for the distribution of ratings per book
     ratings_per_book = ratings.groupby(["book_id"]).count()["rating"].reset_index(name="rating_counts")
     graph_three = [go.Histogram(x=ratings_per_book["rating_counts"],
                 xbins=dict(
@@ -50,47 +49,11 @@ def return_figures(books, ratings):
                 yaxis = dict(title = 'Number of Books'),
                 bargap=0.05,
                 )
-    # # world map
-    
-    # graph_five = []
-    # graph_five.append(go.Choropleth(
-    #     locations = df_merged['countryterritoryCode'],
-    #     z = df_merged['cases'],
-    #     text = df_merged['countriesAndTerritories'],
-    #     colorscale = 'Blues',
-    #     autocolorscale=False,
-    #     reversescale=False))
 
-    # layout_five = dict(title = 'Confirmed COVID-19 cases 20/04/08',
-    #             title_x=0.5,
-    #             geo=dict(
-    #                 showframe=False,
-    #                 showcoastlines=False,
-    #                 projection_type='equirectangular'
-    #             ),
-    #             marker_line_color='darkgray',
-    #             marker_line_width=0.5,
-    #             colorbar_tickprefix = '',
-    #             colorbar_title = 'Confirmed Cases',
-    #             annotations = [dict(
-    #                 x=0.55,
-    #                 y=0.1,
-    #                 xref='paper',
-    #                 yref='paper',
-    #                 text='Source: <a href="https://data.europa.eu/euodp/de/data/dataset/covid-19-coronavirus-data">data.europe</a>',
-    #                 showarrow = False)]
-    #             )
-    
-    
-    
-    
-    # append all charts to the figures list
+    # add data and layout to figures
     figures = []
     figures.append(dict(data=graph_one, layout=layout_one))
     figures.append(dict(data=graph_two, layout=layout_two))
-    figures.append(dict(data=graph_three, layout=layout_three))
-
-    # figures.append(dict(data=graph_five, layout=layout_five))                               
-    
+    figures.append(dict(data=graph_three, layout=layout_three))    
    
     return figures
