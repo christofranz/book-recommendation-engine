@@ -87,7 +87,9 @@ def find_closest_neighbors_for_user(user_id, user_book_rating, user1_book_rating
     user2 = []
     dist = []
     n_close_neighbors = 0
-    other_users = np.delete(user_book_rating["user_id"].unique(), [user_id])
+    all_users = user_book_rating["user_id"].unique()
+    other_users = all_users[all_users != user_id]
+
     for user_id2 in other_users:
         d = compute_euclidean_dist_for_user(user1_book_rating, books_user1, user_id2, user_book_rating)
         user2.append(user_id2)
@@ -99,7 +101,6 @@ def find_closest_neighbors_for_user(user_id, user_book_rating, user1_book_rating
                 break
     
     dist_df = pd.DataFrame({"user2": user2, "dist": dist})
-
     closest_neighbors = list(dist_df.sort_values(["dist"], ascending=True)["user2"])
     
     return closest_neighbors
