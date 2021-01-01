@@ -78,4 +78,4 @@ The webapp offers the possibility to understand the data (distribution of rating
 
 ## Licensing<a name="licensing"></a>
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
-The data was prepared and uploaded by to github [zygmuntz](https://github.com/zygmuntz/goodbooks-10k/).
+The data was prepared and uploaded by [zygmuntz](https://github.com/zygmuntz/goodbooks-10k/) to github.
