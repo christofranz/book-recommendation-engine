@@ -1,4 +1,4 @@
-# book-recommendation-engine
+# Book-Recommendation-Engine
 
 ### Table of Contents
 
@@ -16,13 +16,19 @@ You will need the standard data science libraries found in the Anaconda distribu
 
 - NumPy
 - Pandas
-- Matplotlib
 - Plotly
 - Pytest
-- Seaborn
 - Flask
 
-Alternatively, you can directly install them with `pip install -r requirements.txt`. The code should run with no issues using Python versions 3.8.* or higher.
+If you want to run the jupyter notebooks, you will also need to install:
+
+- jupyter notebook
+- Matplotlib
+- Seaborn
+
+Alternatively, you can directly install them with `pip install -r requirements_full.txt`. The code should run with no issues using Python versions 3.8.* or higher.
+  
+The data used in the webapp is partially stored on git lfs. Hence you need to [download and install git lfs](https://docs.github.com/en/free-pro-team@latest/github/managing-large-files/installing-git-large-file-storage).
 
 ### Instructions
 
@@ -57,13 +63,17 @@ The most important files in this repository:
 
 * `data/ratings.csv` - Csv-file with all ratings from the users for the books.
 
+* `data/user_book_list.pkl` - Pickle-file with all users, the books read and the corresponding ratings. Transformation of `ratings.csv`.
+
 * `book_app/routes.py` - Defines the routes for the flask app and renders the html files.
 
 * `book_app/templates/` - Contains the html files of the webapp.
 
 * `book_app/static/img/` - Contains images used in the webapp.
 
-* `book_app/static/styles` - Contains css-files to format the style of the webpages.
+* `book_app/static/styles/` - Contains css-files to format the style of the webpages.
+
+* `tests/filtering/` - Contains unit tests.
 
 ## Results<a name="results"></a>
 
