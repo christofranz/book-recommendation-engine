@@ -62,22 +62,22 @@ body {
 }
 
 
-/* MARKETING CONTENT
+/* CORE CONTENT
 -------------------------------------------------- */
 
-/* Center align the text within the three columns below the carousel */
-.marketing .col-lg-4 {
+/* Center align the text below the carousel */
+.core .col-lg-4 {
   margin-bottom: 20px;
   text-align: center;
 }
-.marketing h2 {
+.core h2 {
   font-weight: normal;
 }
-.marketing .col-lg-4 p {
+.core .col-lg-4 p {
   margin-right: 10px;
   margin-left: 10px;
 }
-.marketing .row {
+.core .row {
   padding-bottom: 20px;
 }
 
