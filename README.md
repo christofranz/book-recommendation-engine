@@ -22,12 +22,12 @@ You will need the standard data science libraries found in the Anaconda distribu
 - Seaborn
 - Flask
 
-Alternatively, you can directly install them with `pip install -r requirements.txt`. The code should run with no issues using Python versions 3.*.
+Alternatively, you can directly install them with `pip install -r requirements.txt`. The code should run with no issues using Python versions 3.8.* or higher.
 
 ### Instructions
 
 1. Run the following command in the project's root directory to launch the webapp.
-    `python run.py`
+    `python book_app.py`
 
 2. Go to http://0.0.0.0:3001/ 
 
@@ -35,13 +35,13 @@ Alternatively, you can directly install them with `pip install -r requirements.t
 
 ## Project Motivation<a name="motivation"></a>
 
-TODO
+This project shall be a prototype for a book recommendation engine that allows an interaction of the user with the database to get personalized recommendations. Finding the next interesting book can become a challenge and recommendation engines support the user to find the right book. The user based implemented approach recommends books based on the users from the dataset who are most similar and books they liked and the user has not read yet.
 
 ## File Descriptions <a name="files"></a>
 
 The most important files in this repository:
 
-* `run.py` - This python file hosts the webapp via flask.
+* `book_app.py` - This python file hosts the webapp via flask.
 
 * `data_inspection.ipynb` - Jupyter notebook for initial data inspection.
 
@@ -67,11 +67,14 @@ The most important files in this repository:
 
 ## Results<a name="results"></a>
 
-TODO
+The webapp offers the possibility to understand the data (distribution of ratings per book and user, histogram of ratings), inspect the most popular books from the dataset and find books by author and/or title. Additionally, you can like books from the search and be used to get your own recommendations. The likes are stored over different sessions because they are stored in the cookies.
 
 ### Screenshots
 
-TODO
+![Header](documentation/images/header.png)
+![Data Analysis](documentation/images/data.png)
+![Search Books](documentation/images/search.png)
+![Individual Recommendations](documentation/images/individual_recommendations.png)
 
 ## Licensing<a name="licensing"></a>
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
